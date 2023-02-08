@@ -1,5 +1,6 @@
 import { API_URL } from "../src/config/api";
 const resource = '/posts'
+// const id = `/posts/${id}`
 
 
 export const createPost = async (post) => {
@@ -32,3 +33,9 @@ export const getAllPosts = async () => {
                 .catch(error => error.massage)
         })
 } 
+ 
+// export const deleteData = async (id)=>{
+//   return fetch(`${API_URL}${resource}${id}`, {
+//   method: 'DELETE',
+// });
+// } 

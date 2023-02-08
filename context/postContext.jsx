@@ -21,14 +21,14 @@ function postReducer(state, action) {
     if (action.type === 'SUBMITTING') {
         return { ...state, isSubmitting: true }
     }
-    if ( action.type === "SUBMITTED" ) {
+    if (action.type === 'SUBMITTED') {
         return {
-          ...state,
-          isSubmitting: false,
-          data: [{...action.post}, ...state.data]
+            ...state,
+            isSubmitting: false,
+            data: [{ ...action.post }, ...state.data]
         }
-      }
-
+    }
+   
 
     return {
         ...state
@@ -57,16 +57,18 @@ export default function PostContextProvider({ children }) {
     }, [])
 
     const submittingPost = () => {
-        dispatch({ type: "SUBMITTING" })
+        dispatch({ type: 'SUBMITING' })
     }
     const submittedPost = (post) => {
-        dispatch({ type: 'SUBMITTED', post: post})
+        dispatch({ type: 'SUBMITTED', post: post })
     }
+  
+
 
 
 
     return (
-        <PostContext.Provider value={{ ...state , submittingPost ,submittedPost}}>
+        <PostContext.Provider value={{ ...state, submittingPost, submittedPost }}>
             {children}
         </PostContext.Provider>
     )

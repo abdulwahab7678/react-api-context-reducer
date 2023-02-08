@@ -1,30 +1,39 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useRef } from "react"
 import { PostContext } from "../../../context/postContext"
+import { createPost } from "../../../api/post"
 
 
 
 export default function PostNewForm() {
-    const { submittingPost } = useContext(PostContext)
+    const { isSubmitting, submittingPost, submittedPost } = useContext(PostContext)
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
-
+    const formRef = useRef(null)
+    const dontShowForm = () => {
+        formRef.current.parentNode.classList.remove('showForm')
+    }
 
     const handleForm = (e) => {
         e.preventDefault()
         submittingPost()
-        setTitle('')
-        setBody('')
-        console.log("yes submited form")
+        setTimeout(async () => {
+            let data = await createPost({ title, body })
+            submittedPost({ ...data })
+            setTitle('')
+            setBody('')
+            dontShowForm()
+        }, 3000)
+
     }
 
     return (
-        <div className="postnewform">
+        <div ref={formRef} className="postnewform">
             <form onSubmit={handleForm}>
                 <label> ttile</label> <br />
                 <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} /> <br /><br />
                 <label htmlFor=""> body</label>
                 <textarea name="" id="" cols="30" rows="10" value={body} onChange={(e) => setBody(e.target.value)}></textarea>
-                <button type="submit">submit</button>
+                <button type="submit" disabled={isSubmitting}>submit</button>
             </form>
 
         </div>

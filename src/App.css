@@ -4,3 +4,6 @@
 .showForm{
 display: block;
 }
+.dontShowForm{
+display: none;
+}
