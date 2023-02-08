@@ -1,23 +1,34 @@
 import { useReducer, createContext, useEffect } from "react";
 import { getAllPosts } from "../api/post";
 
-export const postContext = createContext()
+export const PostContext = createContext()
 
 
 function postReducer(state, action) {
-    if(action.type === 'FATCHING'){
-        return{
-            ...state  ,
-            loading : true  
-        }
-    }
-    if(action.type === 'FATCHED'){
-        return{
+    if (action.type === 'FATCHING') {
+        return {
             ...state,
-            loading : false,
-            data : [...action.data]
+            loading: true
         }
     }
+    if (action.type === 'FATCHED') {
+        return {
+            ...state,
+            loading: false,
+            data: [...action.data]
+        }
+    }
+    if (action.type === 'SUBMITTING') {
+        return { ...state, isSubmitting: true }
+    }
+    if ( action.type === "SUBMITTED" ) {
+        return {
+          ...state,
+          isSubmitting: false,
+          data: [{...action.post}, ...state.data]
+        }
+      }
+
 
     return {
         ...state
@@ -32,23 +43,31 @@ const initialState = {
 }
 
 
-export default function postContextProvider({ children }) {
-    const [state, despatch] = useReducer(postReducer, initialState)
+export default function PostContextProvider({ children }) {
+    const [state, dispatch] = useReducer(postReducer, initialState)
 
     useEffect(() => {
         const fetchingPost = async () => {
-          despatch({ type: 'FATCHING' })
-          const data = await getAllPosts() 
-          despatch({type : 'FATCHED', data: [...data]})
+            dispatch({ type: 'FATCHING' })
+            const data = await getAllPosts()
+            dispatch({ type: 'FATCHED', data: [...data] })
         }
         fetchingPost()
 
     }, [])
 
+    const submittingPost = () => {
+        dispatch({ type: "SUBMITTING" })
+    }
+    const submittedPost = (post) => {
+        dispatch({ type: 'SUBMITTED', post: post})
+    }
+
+
 
     return (
-        <postContext.Provider value={{ ...state }}>
+        <PostContext.Provider value={{ ...state , submittingPost ,submittedPost}}>
             {children}
-        </postContext.Provider>
+        </PostContext.Provider>
     )
 }

@@ -1,8 +1,8 @@
 import { useContext } from "react"
-import { postContext } from "../../../context/postContext"
+import { PostContext } from "../../../context/postContext"
 
 export default function PostIndex(){
- const { data , loading , error } = useContext(postContext) 
+ const { data , loading , error } = useContext(PostContext) 
 
  if(error) {
     return(
@@ -18,10 +18,10 @@ export default function PostIndex(){
     return(
         <div>
             {data.map(post =>(
-                <div>
+                <div className="posts">
                     <h2>{post.id}</h2>
                     <h2>{post.title}</h2>
-                   <h2>{post.author}</h2>
+                   <h3>{post.body}</h3>
                 </div>
             ))}
         </div>
