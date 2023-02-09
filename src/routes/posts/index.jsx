@@ -1,8 +1,9 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { PostContext } from "../../../context/postContext"
 import PostNewForm from "../../components/posts/postNewForm"
 import { useRef } from "react"
 import { API_URL } from "../../config/api"
+// import { updatePost } from "../../../api/post"
 // import {deleteData} from '../../../api/post'
 
 
@@ -13,8 +14,16 @@ export default function PostIndex() {
         formRef.current.classList.add("showForm")
     }
 
+    function updatePost(title ,body){
+         console.log(title, body)
+        //  const userform = <PostNewForm props={{title:title}}/>
+        //  console.log(userform.props)
+        //  const x = userform.props
+
+    }
+
     function deletePost(id) {
-        console.log(id)
+        alert(`${id} id deleted`)
         fetch(`${API_URL}/posts/${id}`, {
             method: 'DELETE',
         });
@@ -45,7 +54,7 @@ export default function PostIndex() {
                         <h2>{post.id}</h2>
                         <h2>{post.title}</h2>
                         <h3>{post.body}</h3>
-                        <button>edit </button>
+                        <button onClick={(e)=> updatePost(post.title, post.body)}>edit </button>
                         <button onClick={() => deletePost(post.id)} id={post.id}>delete </button>
                     </div>
                 ))}

@@ -28,7 +28,20 @@ function postReducer(state, action) {
             data: [{ ...action.post }, ...state.data]
         }
     }
-   
+    if (action.type === 'UPDATING') {
+        return {
+            ...state,
+            loading: true
+        }
+    }
+    if (action.type === 'UPDATED') {
+        return {
+            ...state,
+            loading: false,
+            data: [{ ...action.update }, ...state.data]
+        }
+    }
+
 
     return {
         ...state
@@ -62,13 +75,19 @@ export default function PostContextProvider({ children }) {
     const submittedPost = (post) => {
         dispatch({ type: 'SUBMITTED', post: post })
     }
-  
+    const updatingPost = () => {
+        dispatch({ type: 'UPDATING' })
+    }
+    const updatedPost = (update) => {
+        dispatch({ type: 'UPDATED', update: update})
+    }
+
 
 
 
 
     return (
-        <PostContext.Provider value={{ ...state, submittingPost, submittedPost }}>
+        <PostContext.Provider value={{ ...state, submittingPost, submittedPost , updatingPost ,updatedPost }}>
             {children}
         </PostContext.Provider>
     )

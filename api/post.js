@@ -39,3 +39,20 @@ export const getAllPosts = async () => {
 //   method: 'DELETE',
 // });
 // } 
+
+export const updatePost = async (post)=>{
+const {title, body, id} = post
+    return fetch(`${API_URL}${resource}${id}`, {
+  method: 'PUT',
+  body: JSON.stringify({
+    id,
+    title,
+    body
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then(data => data);
+}
