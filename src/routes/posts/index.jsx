@@ -9,13 +9,15 @@ import { API_URL } from "../../config/api"
 
 export default function PostIndex() {
     const formRef = useRef(null)
-
+    const [post, setPost] = useState(null)
+    const [showForm, setShowForm] = useState(false)
     const getPostForm = () => {
         formRef.current.classList.add("showForm")
     }
 
-    function updatePost(title ,body){
-         console.log(title, body)
+    function edit(post){
+         setPost(post)
+         setShowForm(true)
         //  const userform = <PostNewForm props={{title:title}}/>
         //  console.log(userform.props)
         //  const x = userform.props
@@ -45,16 +47,18 @@ export default function PostIndex() {
         return (
             <div>
 
-                <button onClick={getPostForm}>new form</button>
-                <div ref={formRef} className="newform">
-                    <PostNewForm />
-                </div>
+                <button onClick={(e) => setShowForm(!showForm)}>{showForm ? "Hide" : "Show"} Form</button>
+                {showForm && (
+                    <div>
+                        <PostNewForm showForm={showForm} setShowForm={setShowForm} data={post} />
+                    </div>
+                )}
                 {data.map(post => (
                     <div className="posts">
                         <h2>{post.id}</h2>
                         <h2>{post.title}</h2>
                         <h3>{post.body}</h3>
-                        <button onClick={(e)=> updatePost(post.title, post.body)}>edit </button>
+                        <button onClick={(e)=> edit(post)}>edit </button>
                         <button onClick={() => deletePost(post.id)} id={post.id}>delete </button>
                     </div>
                 ))}

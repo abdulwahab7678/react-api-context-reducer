@@ -70,7 +70,7 @@ export default function PostContextProvider({ children }) {
     }, [])
 
     const submittingPost = () => {
-        dispatch({ type: 'SUBMITING' })
+        dispatch({ type: 'SUBMITTING' })
     }
     const submittedPost = (post) => {
         dispatch({ type: 'SUBMITTED', post: post })

@@ -1,33 +1,38 @@
-import { useState, useContext, useRef } from "react"
+import { useState, useContext, useEffect } from "react"
 import { PostContext } from "../../../context/postContext"
 import { createPost } from "../../../api/post"
 
 
 
-export default function PostNewForm() {
+export default function PostNewForm({ data, showForm, setShowForm }) {
     const { isSubmitting, submittingPost, submittedPost } = useContext(PostContext)
-    const [title, setTitle] = useState('')
-    const [body, setBody] = useState('')
-    const formRef = useRef(null)
-    const dontShowForm = () => {
-        formRef.current.parentNode.classList.remove('showForm')
-    }
+    const [title, setTitle] = useState(data?.title || '')
+    const [body, setBody] = useState(data?.body || '')
+
+    useEffect(() => {
+        setTitle(data?.title)
+        setBody(data?.body)
+    }, [data])
+   
+  
 
     const handleForm = (e) => {
+           
             e.preventDefault()
             submittingPost()
+            
             setTimeout(async () => {
                 let data = await createPost({ title, body })
                 submittedPost({ ...data })
                 setTitle('')
                 setBody('')
-                dontShowForm()
+                setShowForm(!showForm)
             }, 3000)
 
         }
 
         return (
-            <div ref={formRef} className="postnewform">
+            <div>
                 <form onSubmit={handleForm}>
                     <label> title</label> <br />
                     <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} /> <br /><br />
